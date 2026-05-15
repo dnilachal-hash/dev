@@ -1031,6 +1031,196 @@ strong { color: var(--fg); }
 .reveal.is-in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
 
+/* ==========================================================
+   ROUTING — show only the active page's sections
+   ========================================================== */
+
+/* Hide all data-paged sections by default; router toggles .is-page-active */
+[data-page] { display: none; }
+[data-page].is-page-active { display: block; }
+/* But always allow nav anchors (which also have hash hrefs starting with #) and footer */
+nav [data-page], footer [data-page] { display: revert; }
+
+/* Router-controlled body class hides the default reveal slide on page switch */
+body.routing .reveal { transition: none; }
+
+/* Page header for non-home pages */
+.page-header {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-deep) 100%);
+  color: #fff; padding: clamp(40px, 6vw, 64px) 0 clamp(28px, 4vw, 44px);
+  position: relative; overflow: hidden;
+  border-bottom: 3px solid var(--saffron);
+}
+.page-header::after {
+  content: ""; position: absolute; right: -80px; top: -80px;
+  width: 280px; height: 280px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(224,127,34,.25), transparent 70%);
+}
+.page-header__inner { position: relative; z-index: 1; }
+.page-header .breadcrumb {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: .78rem; color: rgba(255,255,255,.85); margin-bottom: 14px;
+  text-transform: uppercase; letter-spacing: .12em; font-weight: 500;
+}
+.page-header .breadcrumb a { color: var(--gold-soft); border-bottom: 1px dashed transparent; }
+.page-header .breadcrumb a:hover { border-bottom-color: var(--gold-soft); color: var(--gold-soft); }
+.page-header .breadcrumb .sep { color: rgba(255,255,255,.4); }
+.page-header h1 {
+  color: #fff; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: .3em;
+}
+.page-header p { color: rgba(255,255,255,.85); font-size: 1rem; max-width: 720px; margin: 0; }
+
+/* ==========================================================
+   DROPDOWN NAVIGATION (sub-menus)
+   ========================================================== */
+.nav .has-sub { position: relative; }
+.nav .caret { font-size: .65rem; margin-left: 4px; opacity: .7; transition: transform .2s ease; }
+
+.nav .sub {
+  position: absolute; top: calc(100% + 6px); left: 0;
+  min-width: 240px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--saffron);
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg);
+  padding: 8px;
+  list-style: none;
+  margin: 0;
+  display: flex; flex-direction: column; gap: 0;
+  opacity: 0; visibility: hidden; transform: translateY(8px);
+  transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+  z-index: 50;
+}
+.nav .sub li { margin: 0; }
+.nav .sub a {
+  display: block; padding: 10px 14px;
+  font-size: .88rem; color: var(--fg-2); border-radius: 6px;
+  border-bottom: none;
+}
+.nav .sub a:hover { background: var(--bg-soft); color: var(--brand); }
+[data-theme="dark"] .nav .sub a:hover { color: var(--accent); }
+
+.nav .has-sub:hover > .sub,
+.nav .has-sub:focus-within > .sub {
+  opacity: 1; visibility: visible; transform: translateY(0);
+}
+.nav .has-sub:hover > a > .caret,
+.nav .has-sub:focus-within > a > .caret { transform: rotate(180deg); }
+
+/* Active route */
+.nav a.is-route-active { color: var(--brand); background: rgba(14,107,69,.08); }
+[data-theme="dark"] .nav a.is-route-active { color: var(--accent); background: rgba(92,196,152,.1); }
+
+/* Mobile nav: stack sub-menus inline as accordion */
+@media (max-width: 1080px) {
+  .nav .sub {
+    position: static; opacity: 1; visibility: visible; transform: none;
+    background: var(--bg-soft); border: none; border-left: 2px solid var(--saffron);
+    border-radius: 0; box-shadow: none; padding: 0 0 0 12px;
+    margin: 4px 0 8px 14px;
+    max-height: 0; overflow: hidden; transition: max-height .3s ease;
+  }
+  .nav .has-sub.is-open > .sub { max-height: 600px; padding: 6px 0 6px 12px; }
+  .nav .sub a { padding: 10px 14px; font-size: .92rem; border-radius: 6px; }
+  .nav .has-sub.is-open > a > .caret { transform: rotate(180deg); }
+}
+
+/* ---------- home page summary blocks ---------- */
+.section--home-about { background: var(--bg-elev); border-block: 1px solid var(--border); }
+.section--home-course { background: var(--bg-soft); border-bottom: 1px solid var(--border); }
+.section--home-hosp {
+  background: linear-gradient(135deg, var(--brand-deep) 0%, #043520 100%);
+  color: #ECF5F0; border-bottom: 3px solid var(--saffron);
+}
+.section--home-hosp h2, .section--home-hosp h3 { color: #fff; }
+.section--home-hosp .eyebrow { color: var(--gold-soft); }
+.section--home-hosp p { color: rgba(236,245,240,.85); }
+.section--home-notices { background: var(--bg-elev); border-block: 1px solid var(--border); }
+.section--home-explore { background: var(--bg); }
+
+.home-about { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; }
+@media (max-width: 880px) { .home-about { grid-template-columns: 1fr; gap: 32px; } }
+.home-about__pills {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+}
+.home-about__pills li {
+  background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--saffron);
+  border-radius: var(--radius); padding: 16px 20px;
+}
+.home-about__pills strong { display: block; color: var(--brand); font-size: 1rem; margin-bottom: 2px; }
+[data-theme="dark"] .home-about__pills strong { color: var(--accent); }
+.home-about__pills span { font-size: .82rem; color: var(--fg-mute); }
+
+.home-course { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: clamp(28px, 4vw, 48px); box-shadow: var(--shadow-sm); }
+.home-course__head { max-width: 720px; margin-bottom: 28px; }
+.home-course__facts { list-style: none; padding: 0; margin: 0 0 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.home-course__facts li { padding: 14px 16px; background: var(--bg-soft); border-radius: var(--radius); text-align: center; }
+.home-course__facts strong { display: block; font-family: var(--serif); font-size: 1.6rem; color: var(--brand); }
+[data-theme="dark"] .home-course__facts strong { color: var(--accent); }
+.home-course__facts span { font-size: .78rem; color: var(--fg-mute); }
+.home-course__cta { display: flex; gap: 12px; flex-wrap: wrap; }
+@media (max-width: 540px) { .home-course__facts { grid-template-columns: 1fr 1fr; } }
+
+.home-hosp { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+@media (max-width: 880px) { .home-hosp { grid-template-columns: 1fr; gap: 32px; } }
+.home-hosp__intro p:last-of-type { margin-bottom: 0; }
+.home-hosp__stats {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+}
+.home-hosp__stats li { padding: 22px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius); text-align: center; }
+.home-hosp__stats .num {
+  display: block; font-family: var(--serif); font-size: 2.2rem; line-height: 1;
+  background: linear-gradient(135deg, var(--saffron), var(--gold));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  margin-bottom: 6px;
+}
+.home-hosp__stats .lbl { font-size: .8rem; color: rgba(236,245,240,.85); }
+
+.home-notices { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; max-width: 920px; margin-inline: auto; }
+.home-notices li {
+  display: grid; grid-template-columns: 110px 110px 1fr; gap: 16px; align-items: center;
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 14px 18px; transition: border-color .2s ease, transform .2s ease;
+}
+.home-notices li:hover { border-color: var(--accent); transform: translateX(2px); }
+.home-notices time { font-family: var(--serif); font-weight: 600; color: var(--fg-mute); font-size: .9rem; }
+.home-notices a { color: var(--fg); font-weight: 500; }
+.home-notices a:hover { color: var(--brand); }
+@media (max-width: 720px) {
+  .home-notices li { grid-template-columns: 1fr; gap: 4px; }
+}
+
+.home-explore { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+@media (max-width: 960px) { .home-explore { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .home-explore { grid-template-columns: 1fr; } }
+.home-explore a {
+  display: flex; flex-direction: column; gap: 6px; min-height: 110px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 22px; color: var(--fg);
+  transition: border-color .25s ease, transform .25s ease, background .25s ease;
+  position: relative;
+}
+.home-explore a::after {
+  content: "→"; position: absolute; top: 18px; right: 20px;
+  color: var(--saffron); font-size: 1.2rem; transition: transform .2s ease;
+}
+.home-explore a:hover { border-color: var(--brand); transform: translateY(-2px); background: var(--bg-elev); }
+.home-explore a:hover::after { transform: translateX(4px); }
+.home-explore h3 { margin: 0; font-size: 1.05rem; color: var(--brand); }
+[data-theme="dark"] .home-explore h3 { color: var(--accent); }
+.home-explore span { font-size: .82rem; color: var(--fg-mute); }
+
+.link-arrow {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--brand); font-weight: 500;
+  border-bottom: 1px solid currentColor; padding-bottom: 1px;
+  transition: gap .2s ease, color .2s ease;
+}
+.link-arrow:hover { color: var(--saffron); gap: 8px; }
+
 /* ---------- selection ---------- */
 ::selection { background: var(--accent); color: var(--brand-deep); }
 
@@ -1270,14 +1460,76 @@ body.edx-on .cert__seal { isolation: isolate; }
     <nav class="nav" id="primaryNav" aria-label="Primary">
       <ul>
         <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#courses">Courses</a></li>
-        <li><a href="#hospital">Hospital</a></li>
-        <li><a href="#departments">Departments</a></li>
-        <li><a href="#faculty">Faculty</a></li>
-        <li><a href="#admissions">Admissions</a></li>
-        <li><a href="#notices">Notices</a></li>
-        <li><a href="#disclosures">Disclosures</a></li>
+
+        <li class="has-sub">
+          <a href="#about" aria-haspopup="true" aria-expanded="false">About <span class="caret" aria-hidden="true">▾</span></a>
+          <ul class="sub" role="menu">
+            <li><a href="#about">Overview</a></li>
+            <li><a href="#about/mission">Mission &amp; Vision</a></li>
+            <li><a href="#about/messages">Chairman &amp; Principal</a></li>
+            <li><a href="#about/why">Why Choose Us</a></li>
+            <li><a href="#about/timeline">Milestones</a></li>
+            <li><a href="#about/testimonials">Testimonials</a></li>
+            <li><a href="#about/research">Research &amp; Outreach</a></li>
+          </ul>
+        </li>
+
+        <li class="has-sub">
+          <a href="#courses" aria-haspopup="true" aria-expanded="false">Academics <span class="caret" aria-hidden="true">▾</span></a>
+          <ul class="sub" role="menu">
+            <li><a href="#courses">BHMS Programme</a></li>
+            <li><a href="#courses/internship">Internship Structure</a></li>
+            <li><a href="#departments">Departments</a></li>
+            <li><a href="#faculty">Faculty</a></li>
+          </ul>
+        </li>
+
+        <li class="has-sub">
+          <a href="#admissions" aria-haspopup="true" aria-expanded="false">Admissions <span class="caret" aria-hidden="true">▾</span></a>
+          <ul class="sub" role="menu">
+            <li><a href="#admissions">Admission Process</a></li>
+            <li><a href="#admissions/documents">Documents Required</a></li>
+            <li><a href="#admissions/scholarships">Scholarships &amp; Hostel</a></li>
+            <li><a href="#admissions/inquiry">Inquiry Form</a></li>
+          </ul>
+        </li>
+
+        <li class="has-sub">
+          <a href="#hospital" aria-haspopup="true" aria-expanded="false">Hospital <span class="caret" aria-hidden="true">▾</span></a>
+          <ul class="sub" role="menu">
+            <li><a href="#hospital">Overview</a></li>
+            <li><a href="#hospital/services">OPD / IPD &amp; Services</a></li>
+            <li><a href="#hospital/community">Community Outreach</a></li>
+          </ul>
+        </li>
+
+        <li class="has-sub">
+          <a href="#campus" aria-haspopup="true" aria-expanded="false">Campus <span class="caret" aria-hidden="true">▾</span></a>
+          <ul class="sub" role="menu">
+            <li><a href="#campus">Infrastructure</a></li>
+            <li><a href="#campus/student-life">Student Life</a></li>
+            <li><a href="#campus/gallery">Gallery</a></li>
+          </ul>
+        </li>
+
+        <li class="has-sub">
+          <a href="#notices" aria-haspopup="true" aria-expanded="false">Notices <span class="caret" aria-hidden="true">▾</span></a>
+          <ul class="sub" role="menu">
+            <li><a href="#notices">Notice Board</a></li>
+            <li><a href="#notices/news">News &amp; Events</a></li>
+          </ul>
+        </li>
+
+        <li class="has-sub">
+          <a href="#disclosures" aria-haspopup="true" aria-expanded="false">Disclosures <span class="caret" aria-hidden="true">▾</span></a>
+          <ul class="sub" role="menu">
+            <li><a href="#disclosures/recognition">Recognition &amp; Affiliation</a></li>
+            <li><a href="#disclosures/committees">Statutory Committees</a></li>
+            <li><a href="#disclosures/mandatory">Mandatory Disclosures</a></li>
+            <li><a href="#disclosures/ragging">Anti-Ragging</a></li>
+          </ul>
+        </li>
+
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
@@ -1298,7 +1550,7 @@ body.edx-on .cert__seal { isolation: isolate; }
 <main id="main">
 
 <!-- ============== HERO ============== -->
-<section class="hero" id="home">
+<section class="hero" id="home" data-page="home">
   <div class="hero__bg" aria-hidden="true">
     <svg class="hero__pattern" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice">
       <defs>
@@ -1391,8 +1643,119 @@ body.edx-on .cert__seal { isolation: isolate; }
   </div>
 </section>
 
+<!-- ============== HOME — SUMMARY SECTIONS ============== -->
+
+<!-- Home: about teaser -->
+<section class="section section--home-about" data-page="home">
+  <div class="container">
+    <div class="home-about reveal">
+      <div class="home-about__text">
+        <p class="eyebrow"><span class="eyebrow__dash"></span> About the Institution</p>
+        <h2 class="section-title">A college rooted in service, scholarship and care.</h2>
+        <p>Rameshwar Das Kedia Homoeopathic Medical College and Hospital is a medical institution in Motihari, East Champaran, dedicated to producing competent, ethical Homoeopathic physicians and providing accessible Homoeopathic healthcare to the people of Bihar.</p>
+        <p><a href="#about" class="link-arrow">Read full about &rarr;</a></p>
+      </div>
+      <ul class="home-about__pills">
+        <li><strong>Recognised</strong><span>by NCH &amp; AYUSH</span></li>
+        <li><strong>Affiliated</strong><span>to recognised university</span></li>
+        <li><strong>Teaching Hospital</strong><span>attached on-campus</span></li>
+        <li><strong>NEET-UG</strong><span>admission basis</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Home: course preview -->
+<section class="section section--home-course" data-page="home">
+  <div class="container">
+    <div class="home-course reveal">
+      <div class="home-course__head">
+        <p class="eyebrow"><span class="eyebrow__dash"></span> The Programme</p>
+        <h2 class="section-title">Bachelor of Homoeopathic Medicine &amp; Surgery</h2>
+        <p>A 4½-year academic programme + 1-year compulsory rotatory internship, conducted under the regulations of the National Commission for Homoeopathy with mandatory clinical training in the attached teaching hospital.</p>
+      </div>
+      <ul class="home-course__facts">
+        <li><strong>5½ yrs</strong><span>Total Duration</span></li>
+        <li><strong>NEET-UG</strong><span>Admission</span></li>
+        <li><strong>NCH 2022</strong><span>Curriculum</span></li>
+        <li><strong>12 mo</strong><span>Internship</span></li>
+      </ul>
+      <div class="home-course__cta">
+        <a href="#courses" class="btn btn--primary">View course details</a>
+        <a href="#admissions" class="btn btn--ghost">Admission process</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Home: hospital strip -->
+<section class="section section--home-hosp" data-page="home">
+  <div class="container">
+    <div class="home-hosp reveal">
+      <div class="home-hosp__intro">
+        <p class="eyebrow"><span class="eyebrow__dash"></span> Teaching Hospital</p>
+        <h2 class="section-title">A working hospital that teaches.</h2>
+        <p>Daily OPD, inpatient services, specialty clinics and community camps anchor every student's medical education.</p>
+        <a href="#hospital" class="link-arrow">Visit the hospital page &rarr;</a>
+      </div>
+      <ul class="home-hosp__stats">
+        <li><span class="num">220+</span><span class="lbl">Daily OPD</span></li>
+        <li><span class="num">100+</span><span class="lbl">Inpatient beds</span></li>
+        <li><span class="num">10</span><span class="lbl">Departments</span></li>
+        <li><span class="num">40+</span><span class="lbl">Annual camps</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Home: latest notices preview -->
+<section class="section section--home-notices" data-page="home">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="eyebrow__dash"></span> Notices &amp; Updates</p>
+      <h2 class="section-title">From the institutional notice board.</h2>
+    </div>
+    <ul class="home-notices reveal">
+      <li><time datetime="2026-05-12">12 May 2026</time><span class="notice__cat">Admission</span><a href="#notices">BHMS counselling registration window opens</a></li>
+      <li><time datetime="2026-05-08">08 May 2026</time><span class="notice__cat">Exam</span><a href="#notices">BHMS Part-II practical exam schedule</a></li>
+      <li><time datetime="2026-04-28">28 Apr 2026</time><span class="notice__cat">Circular</span><a href="#notices">Library timing revision for summer term</a></li>
+      <li><time datetime="2026-04-20">20 Apr 2026</time><span class="notice__cat">Academic</span><a href="#notices">Academic calendar 2026 published</a></li>
+    </ul>
+    <p class="center reveal" style="margin-top:24px"><a href="#notices" class="btn btn--ghost btn--sm">View all notices &rarr;</a></p>
+  </div>
+</section>
+
+<!-- Home: explore strip -->
+<section class="section section--home-explore" data-page="home">
+  <div class="container">
+    <div class="section-head reveal center">
+      <p class="eyebrow"><span class="eyebrow__dash"></span> Explore the Institution</p>
+      <h2 class="section-title">Choose a section to learn more.</h2>
+    </div>
+    <ul class="home-explore reveal">
+      <li><a href="#about"><h3>About</h3><span>Mission, leadership, milestones, why us</span></a></li>
+      <li><a href="#courses"><h3>Academics</h3><span>BHMS course, internship, departments, faculty</span></a></li>
+      <li><a href="#admissions"><h3>Admissions</h3><span>Process, eligibility, fees, scholarships</span></a></li>
+      <li><a href="#hospital"><h3>Hospital</h3><span>OPD/IPD, services, outreach</span></a></li>
+      <li><a href="#campus"><h3>Campus</h3><span>Infrastructure, hostel, student life, gallery</span></a></li>
+      <li><a href="#notices"><h3>Notices</h3><span>Latest notices, news, achievements</span></a></li>
+      <li><a href="#disclosures"><h3>Disclosures</h3><span>Recognition, committees, anti-ragging, statutory</span></a></li>
+      <li><a href="#contact"><h3>Contact</h3><span>Address, helpline, inquiry, location map</span></a></li>
+    </ul>
+  </div>
+</section>
+
 <!-- ============== ABOUT ============== -->
-<section class="section section--about" id="about">
+<!-- page header: about -->
+<header class="page-header" data-page="about">
+  <div class="container page-header__inner">
+    <p class="breadcrumb"><a href="#home">Home</a><span class="sep">/</span><span>About</span></p>
+    <h1>About the Institution</h1>
+    <p>Mission, vision, leadership, milestones and the institution's sincere commitment to ethical Homoeopathic education.</p>
+  </div>
+</header>
+
+<section class="section section--about" id="about" data-page="about">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> About the Institution</p>
@@ -1426,7 +1789,7 @@ body.edx-on .cert__seal { isolation: isolate; }
       </article>
     </div>
 
-    <div class="message-grid">
+    <div class="message-grid" id="principal-message">
       <article class="message-card reveal">
         <p class="eyebrow">From the Chairman</p>
         <blockquote>
@@ -1450,7 +1813,7 @@ body.edx-on .cert__seal { isolation: isolate; }
       </article>
     </div>
 
-    <div class="timeline reveal" aria-label="Institutional milestones">
+    <div class="timeline reveal" aria-label="Institutional milestones" id="milestones">
       <h3 class="timeline__title">A short institutional timeline</h3>
       <ol class="timeline__list">
         <li><span class="t-year">Year ____</span><span class="t-text">Establishment of the institution by the founding trust.</span></li>
@@ -1464,7 +1827,7 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== WHY CHOOSE US ============== -->
-<section class="section section--why" id="why">
+<section class="section section--why" id="why" data-page="about">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Why this institution</p>
@@ -1506,7 +1869,16 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== RECOGNITION ============== -->
-<section class="section section--recog" id="recognition">
+<!-- page header: disclosures -->
+<header class="page-header" data-page="disclosures">
+  <div class="container page-header__inner">
+    <p class="breadcrumb"><a href="#home">Home</a><span class="sep">/</span><span>Disclosures</span></p>
+    <h1>Mandatory Disclosures &amp; Statutory Information</h1>
+    <p>Recognition documents, statutory committees, anti-ragging compliance and other public disclosures as required by NCH and applicable regulations.</p>
+  </div>
+</header>
+
+<section class="section section--recog" id="recognition" data-page="disclosures">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Recognition · Approvals · Affiliation</p>
@@ -1561,7 +1933,16 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== COURSES ============== -->
-<section class="section section--courses" id="courses">
+<!-- page header: courses -->
+<header class="page-header" data-page="courses">
+  <div class="container page-header__inner">
+    <p class="breadcrumb"><a href="#home">Home</a><span class="sep">/</span><span>Academics</span></p>
+    <h1>BHMS Programme &amp; Internship</h1>
+    <p>A 4½-year Bachelor of Homoeopathic Medicine &amp; Surgery programme followed by a 12-month compulsory rotatory internship — conducted as per NCH regulations.</p>
+  </div>
+</header>
+
+<section class="section section--courses" id="courses" data-page="courses">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Courses Offered</p>
@@ -1595,7 +1976,7 @@ body.edx-on .cert__seal { isolation: isolate; }
     </div>
 
     <!-- Internship — NCH BHMS Course Regulations, 12-month rotatory internship -->
-    <div class="intern reveal">
+    <div class="intern reveal" id="internship">
       <div class="intern__head">
         <p class="eyebrow"><span class="eyebrow__dash"></span> Compulsory Rotatory Internship</p>
         <h3>12-month structured internship as per NCH regulations</h3>
@@ -1618,7 +1999,16 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== ADMISSIONS ============== -->
-<section class="section section--admissions" id="admissions">
+<!-- page header: admissions -->
+<header class="page-header" data-page="admissions">
+  <div class="container page-header__inner">
+    <p class="breadcrumb"><a href="#home">Home</a><span class="sep">/</span><span>Admissions</span></p>
+    <h1>Admission Process &amp; Inquiry</h1>
+    <p>A clear, step-by-step admission journey through the recognised counselling process — eligibility, documents, fees, scholarships and contact.</p>
+  </div>
+</header>
+
+<section class="section section--admissions" id="admissions" data-page="admissions">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Admissions</p>
@@ -1638,7 +2028,7 @@ body.edx-on .cert__seal { isolation: isolate; }
       </ol>
 
       <aside class="adm-side reveal">
-        <div class="adm-card">
+        <div class="adm-card" id="admission-docs">
           <h4>Documents required</h4>
           <ul class="checklist">
             <li>10th &amp; 12th mark sheets and certificates</li>
@@ -1652,7 +2042,7 @@ body.edx-on .cert__seal { isolation: isolate; }
           </ul>
         </div>
 
-        <div class="adm-card adm-card--soft">
+        <div class="adm-card adm-card--soft" id="admission-scholarships">
           <h4>Scholarships &amp; reservations</h4>
           <p>Reservations as per Government of Bihar / Government of India norms. Scholarship details for SC / ST / OBC / EWS categories are made available at the admission office.</p>
         </div>
@@ -1695,7 +2085,16 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== HOSPITAL ============== -->
-<section class="section section--hospital" id="hospital">
+<!-- page header: hospital -->
+<header class="page-header" data-page="hospital">
+  <div class="container page-header__inner">
+    <p class="breadcrumb"><a href="#home">Home</a><span class="sep">/</span><span>Hospital</span></p>
+    <h1>Teaching Hospital</h1>
+    <p>A working Homoeopathic teaching hospital — daily OPD, inpatient services, specialty clinics and community health camps.</p>
+  </div>
+</header>
+
+<section class="section section--hospital" id="hospital" data-page="hospital">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Teaching Hospital</p>
@@ -1711,7 +2110,7 @@ body.edx-on .cert__seal { isolation: isolate; }
       <li class="stat reveal"><span class="stat__num" data-count="40">40+</span><span class="stat__lbl">Annual health camps</span></li>
     </ul>
 
-    <div class="hosp-grid">
+    <div class="hosp-grid" id="hospital-services">
       <article class="hosp reveal">
         <h3>OPD Services</h3>
         <p>General Homoeopathic OPD running through the week with senior physician supervision and student case-taking.</p>
@@ -1738,12 +2137,21 @@ body.edx-on .cert__seal { isolation: isolate; }
       </article>
     </div>
 
-    <p class="hosp-philosophy reveal"><em>“Cure the patient — gently, rapidly, and permanently — with the least possible disturbance to the system.”</em><br><span>The classical Hahnemannian principle that guides every clinical decision in our hospital.</span></p>
+    <p class="hosp-philosophy reveal" id="hospital-community"><em>“Cure the patient — gently, rapidly, and permanently — with the least possible disturbance to the system.”</em><br><span>The classical Hahnemannian principle that guides every clinical decision in our hospital.</span></p>
   </div>
 </section>
 
 <!-- ============== DEPARTMENTS ============== -->
-<section class="section section--depts" id="departments">
+<!-- page header: departments -->
+<header class="page-header" data-page="departments">
+  <div class="container page-header__inner">
+    <p class="breadcrumb"><a href="#home">Home</a><span class="sep">/</span><span>Academics</span></p>
+    <h1>Academic Departments</h1>
+    <p>Departments built around the BHMS curriculum, supported by laboratories, museum, herbal garden and clinical postings.</p>
+  </div>
+</header>
+
+<section class="section section--depts" id="departments" data-page="departments">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Academic Departments</p>
@@ -1799,7 +2207,16 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== FACULTY ============== -->
-<section class="section section--faculty" id="faculty">
+<!-- page header: faculty -->
+<header class="page-header" data-page="faculty">
+  <div class="container page-header__inner">
+    <p class="breadcrumb"><a href="#home">Home</a><span class="sep">/</span><span>Academics</span></p>
+    <h1>Faculty &amp; Leadership</h1>
+    <p>A faculty of clinicians and teachers — registered with the State Board of Homoeopathic Medicine and approved by the National Commission for Homoeopathy.</p>
+  </div>
+</header>
+
+<section class="section section--faculty" id="faculty" data-page="faculty">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Faculty &amp; Leadership</p>
@@ -1872,7 +2289,16 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== INFRASTRUCTURE ============== -->
-<section class="section section--infra" id="infrastructure">
+<!-- page header: campus -->
+<header class="page-header" data-page="campus">
+  <div class="container page-header__inner">
+    <p class="breadcrumb"><a href="#home">Home</a><span class="sep">/</span><span>Campus</span></p>
+    <h1>Campus &amp; Student Life</h1>
+    <p>Infrastructure, hostel, library, herbal garden, student activities and the wider life of the campus.</p>
+  </div>
+</header>
+
+<section class="section section--infra" id="infrastructure" data-page="campus">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Campus Infrastructure</p>
@@ -1926,7 +2352,7 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== STUDENT LIFE ============== -->
-<section class="section section--life" id="student-life">
+<section class="section section--life" id="student-life" data-page="campus">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Student Life</p>
@@ -1946,7 +2372,7 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== STATUTORY COMMITTEES (NCH / UGC / POSH) ============== -->
-<section class="section section--committees" id="committees">
+<section class="section section--committees" id="committees" data-page="disclosures">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Statutory Committees</p>
@@ -2055,7 +2481,7 @@ body.edx-on .cert__seal { isolation: isolate; }
     </div>
 
     <!-- Anti-ragging national helpline strip -->
-    <aside class="ragging" role="note">
+    <aside class="ragging" role="note" id="ragging-anchor">
       <div class="ragging__icon" aria-hidden="true">
         <svg viewBox="0 0 24 24"><path d="M12 2 3 6v6c0 5 3.8 9.7 9 10 5.2-.3 9-5 9-10V6Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v5m0 3v.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </div>
@@ -2068,7 +2494,16 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== NOTICES ============== -->
-<section class="section section--notices" id="notices">
+<!-- page header: notices -->
+<header class="page-header" data-page="notices">
+  <div class="container page-header__inner">
+    <p class="breadcrumb"><a href="#home">Home</a><span class="sep">/</span><span>Notices</span></p>
+    <h1>Notices, News &amp; Events</h1>
+    <p>Institutional notice board, examination updates, circulars, events, achievements and outreach activity.</p>
+  </div>
+</header>
+
+<section class="section section--notices" id="notices" data-page="notices">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Notices &amp; Announcements</p>
@@ -2102,7 +2537,7 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== NEWS / EVENTS ============== -->
-<section class="section section--news" id="news">
+<section class="section section--news" id="news" data-page="notices">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> News, Events &amp; Achievements</p>
@@ -2120,7 +2555,7 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== TESTIMONIALS ============== -->
-<section class="section section--testi" id="testimonials">
+<section class="section section--testi" id="testimonials" data-page="about">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Voices from the Institution</p>
@@ -2156,7 +2591,7 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== GALLERY ============== -->
-<section class="section section--gallery" id="gallery">
+<section class="section section--gallery" id="gallery" data-page="campus">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Gallery</p>
@@ -2177,7 +2612,7 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== RESEARCH / OUTREACH ============== -->
-<section class="section section--research" id="research">
+<section class="section section--research" id="research" data-page="about">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Research &amp; Community Outreach</p>
@@ -2195,9 +2630,9 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== QUICK LINKS ============== -->
-<section class="section section--quick" id="disclosures">
+<section class="section section--quick" id="disclosures" data-page="disclosures">
   <div class="container">
-    <div class="section-head reveal">
+    <div class="section-head reveal" id="mandatory-disclosures">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Mandatory Disclosures</p>
       <h2 class="section-title">Public information &amp; downloadable documents.</h2>
       <p class="section-lede">Information published in compliance with the disclosure requirements of the National Commission for Homoeopathy, the affiliating university, and applicable statutory regulations. Drag a PDF onto any tile (in edit mode) to attach the corresponding document.</p>
@@ -2275,7 +2710,16 @@ body.edx-on .cert__seal { isolation: isolate; }
 </section>
 
 <!-- ============== CONTACT ============== -->
-<section class="section section--contact" id="contact">
+<!-- page header: contact -->
+<header class="page-header" data-page="contact">
+  <div class="container page-header__inner">
+    <p class="breadcrumb"><a href="#home">Home</a><span class="sep">/</span><span>Contact</span></p>
+    <h1>Reach the Institution</h1>
+    <p>Visit, write or call — admission helpline, hospital OPD, principal's office, location and inquiry form.</p>
+  </div>
+</header>
+
+<section class="section section--contact" id="contact" data-page="contact">
   <div class="container contact-wrap">
     <div class="contact-info reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Reach Us</p>
@@ -2408,6 +2852,120 @@ body.edx-on .cert__seal { isolation: isolate; }
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+  /* ---------------- Hash router ----------------
+     Routes:
+       #home                   → page = home
+       #about                  → page = about
+       #about/messages         → page = about, scroll to #messages
+       #campus                 → page = campus (alias for infrastructure/student-life/gallery)
+     Aliases below map a menu route to one or more data-page values.
+  ---------------- */
+  const ROUTE_ALIAS = {
+    campus: ['campus'],          // campus page already tagged via data-page="campus"
+  };
+  // Sub-route → element id to scroll to inside the active page
+  const SUB_ANCHOR = {
+    'about/mission':       'about',
+    'about/messages':      'principal-message',
+    'about/why':           'why',
+    'about/timeline':      'milestones',
+    'about/testimonials':  'testimonials',
+    'about/research':      'research',
+    'courses/internship':  'internship',
+    'admissions/documents':'admission-docs',
+    'admissions/scholarships':'admission-scholarships',
+    'admissions/inquiry':  'inquiryForm',
+    'hospital/services':   'hospital-services',
+    'hospital/community':  'hospital-community',
+    'campus/student-life': 'student-life',
+    'campus/gallery':      'gallery',
+    'notices/news':        'news',
+    'disclosures/recognition':'recognition',
+    'disclosures/committees': 'committees',
+    'disclosures/mandatory':  'mandatory-disclosures',
+    'disclosures/ragging':    'ragging-anchor'
+  };
+
+  function parseHash() {
+    const raw = (location.hash || '#home').replace(/^#/, '');
+    const [page, ...rest] = raw.split('/');
+    return { page: page || 'home', sub: rest.join('/'), full: raw };
+  }
+
+  function showPage(page) {
+    document.body.classList.add('routing');
+    const targets = ROUTE_ALIAS[page] || [page];
+    let shown = 0;
+    document.querySelectorAll('[data-page]').forEach((el) => {
+      const isActive = targets.includes(el.dataset.page);
+      el.classList.toggle('is-page-active', isActive);
+      if (isActive) shown++;
+    });
+    if (!shown) {
+      // unknown page → default home
+      document.querySelectorAll('[data-page="home"]').forEach((el) => el.classList.add('is-page-active'));
+    }
+    requestAnimationFrame(() => document.body.classList.remove('routing'));
+  }
+
+  function highlightActiveNav(page) {
+    $$('.nav a').forEach((a) => a.classList.remove('is-route-active'));
+    $$(`.nav a[href^="#${page}"]`).forEach((a) => a.classList.add('is-route-active'));
+  }
+
+  function route() {
+    const { page, full } = parseHash();
+    showPage(page);
+    highlightActiveNav(page);
+
+    // scroll: top first, then sub-anchor if any
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    const anchor = SUB_ANCHOR[full];
+    if (anchor) {
+      // wait for page to render
+      setTimeout(() => {
+        const el = document.getElementById(anchor);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 60);
+    }
+    // close mobile nav on route
+    const nav = $('#primaryNav');
+    if (nav && nav.classList.contains('is-open')) {
+      nav.classList.remove('is-open');
+      const btn = $('#menuToggle');
+      btn && btn.setAttribute('aria-expanded', 'false');
+    }
+    // close any open desktop dropdowns
+    $$('.has-sub.is-open').forEach((li) => li.classList.remove('is-open'));
+  }
+
+  window.addEventListener('hashchange', route);
+  // route on load (after DOM ready)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', route, { once: true });
+  } else {
+    route();
+  }
+
+  /* ---------------- Mobile dropdown accordion ---------------- */
+  $$('.has-sub > a').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      // On narrow screens, first tap opens the sub-menu, second tap navigates
+      const isMobile = window.matchMedia('(max-width: 1080px)').matches;
+      if (!isMobile) return;
+      const li = a.parentElement;
+      if (!li.classList.contains('is-open')) {
+        e.preventDefault();
+        $$('.has-sub.is-open').forEach((other) => other !== li && other.classList.remove('is-open'));
+        li.classList.add('is-open');
+        a.setAttribute('aria-expanded', 'true');
+      } else {
+        // already open — let click navigate; close after
+        a.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
 
   /* ---------------- Theme toggle ---------------- */
   const themeToggle = $('#themeToggle');
@@ -2644,6 +3202,11 @@ body.edx-on .cert__seal { isolation: isolate; }
     'main .fac__role', 'main .fac__qual', 'main .fac__reg', 'main .news__tag',
     'main .intern__grid strong', 'main .intern__grid span',
     'main .cmt__list span', 'main .cmt__list li', 'main .disc__group',
+    'main .page-header h1', 'main .page-header p', 'main .breadcrumb span:last-child',
+    'main .home-about__pills strong', 'main .home-about__pills span',
+    'main .home-course__facts strong', 'main .home-course__facts span',
+    'main .home-hosp__stats .num', 'main .home-hosp__stats .lbl',
+    'main .home-explore h3', 'main .home-explore span',
     'main .notice__cat', 'main .t-card footer', 'main .hero__cardfoot strong',
     'main .hero__cardfoot span',
     'footer h5', 'footer p', 'footer li', 'footer address',

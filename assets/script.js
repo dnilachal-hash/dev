@@ -5,6 +5,120 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
+  /* ---------------- Hash router ----------------
+     Routes:
+       #home                   → page = home
+       #about                  → page = about
+       #about/messages         → page = about, scroll to #messages
+       #campus                 → page = campus (alias for infrastructure/student-life/gallery)
+     Aliases below map a menu route to one or more data-page values.
+  ---------------- */
+  const ROUTE_ALIAS = {
+    campus: ['campus'],          // campus page already tagged via data-page="campus"
+  };
+  // Sub-route → element id to scroll to inside the active page
+  const SUB_ANCHOR = {
+    'about/mission':       'about',
+    'about/messages':      'principal-message',
+    'about/why':           'why',
+    'about/timeline':      'milestones',
+    'about/testimonials':  'testimonials',
+    'about/research':      'research',
+    'courses/internship':  'internship',
+    'admissions/documents':'admission-docs',
+    'admissions/scholarships':'admission-scholarships',
+    'admissions/inquiry':  'inquiryForm',
+    'hospital/services':   'hospital-services',
+    'hospital/community':  'hospital-community',
+    'campus/student-life': 'student-life',
+    'campus/gallery':      'gallery',
+    'notices/news':        'news',
+    'disclosures/recognition':'recognition',
+    'disclosures/committees': 'committees',
+    'disclosures/mandatory':  'mandatory-disclosures',
+    'disclosures/ragging':    'ragging-anchor'
+  };
+
+  function parseHash() {
+    const raw = (location.hash || '#home').replace(/^#/, '');
+    const [page, ...rest] = raw.split('/');
+    return { page: page || 'home', sub: rest.join('/'), full: raw };
+  }
+
+  function showPage(page) {
+    document.body.classList.add('routing');
+    const targets = ROUTE_ALIAS[page] || [page];
+    let shown = 0;
+    document.querySelectorAll('[data-page]').forEach((el) => {
+      const isActive = targets.includes(el.dataset.page);
+      el.classList.toggle('is-page-active', isActive);
+      if (isActive) shown++;
+    });
+    if (!shown) {
+      // unknown page → default home
+      document.querySelectorAll('[data-page="home"]').forEach((el) => el.classList.add('is-page-active'));
+    }
+    requestAnimationFrame(() => document.body.classList.remove('routing'));
+  }
+
+  function highlightActiveNav(page) {
+    $$('.nav a').forEach((a) => a.classList.remove('is-route-active'));
+    $$(`.nav a[href^="#${page}"]`).forEach((a) => a.classList.add('is-route-active'));
+  }
+
+  function route() {
+    const { page, full } = parseHash();
+    showPage(page);
+    highlightActiveNav(page);
+
+    // scroll: top first, then sub-anchor if any
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    const anchor = SUB_ANCHOR[full];
+    if (anchor) {
+      // wait for page to render
+      setTimeout(() => {
+        const el = document.getElementById(anchor);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 60);
+    }
+    // close mobile nav on route
+    const nav = $('#primaryNav');
+    if (nav && nav.classList.contains('is-open')) {
+      nav.classList.remove('is-open');
+      const btn = $('#menuToggle');
+      btn && btn.setAttribute('aria-expanded', 'false');
+    }
+    // close any open desktop dropdowns
+    $$('.has-sub.is-open').forEach((li) => li.classList.remove('is-open'));
+  }
+
+  window.addEventListener('hashchange', route);
+  // route on load (after DOM ready)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', route, { once: true });
+  } else {
+    route();
+  }
+
+  /* ---------------- Mobile dropdown accordion ---------------- */
+  $$('.has-sub > a').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      // On narrow screens, first tap opens the sub-menu, second tap navigates
+      const isMobile = window.matchMedia('(max-width: 1080px)').matches;
+      if (!isMobile) return;
+      const li = a.parentElement;
+      if (!li.classList.contains('is-open')) {
+        e.preventDefault();
+        $$('.has-sub.is-open').forEach((other) => other !== li && other.classList.remove('is-open'));
+        li.classList.add('is-open');
+        a.setAttribute('aria-expanded', 'true');
+      } else {
+        // already open — let click navigate; close after
+        a.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
   /* ---------------- Theme toggle ---------------- */
   const themeToggle = $('#themeToggle');
   const root = document.documentElement;
