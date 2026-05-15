@@ -471,6 +471,38 @@ strong { color: var(--fg); }
 
 .course__cta { display: flex; gap: 10px; flex-wrap: wrap; }
 
+/* ---------- internship (NCH 12-month rotatory) ---------- */
+.intern {
+  margin-top: 36px; background: var(--bg-elev); border: 1px solid var(--border);
+  border-left: 3px solid var(--accent); border-radius: var(--radius-lg);
+  padding: 32px 36px;
+}
+.intern__head { margin-bottom: 22px; max-width: 760px; }
+.intern__head h3 { color: var(--brand); font-size: 1.4rem; margin-bottom: 6px; }
+[data-theme="dark"] .intern__head h3 { color: var(--accent); }
+.intern__head .eyebrow { margin-bottom: .8em; }
+
+.intern__grid {
+  list-style: none; padding: 0; margin: 0 0 18px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+.intern__grid li {
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 14px 18px; display: flex; flex-direction: column; gap: 4px;
+  font-size: .9rem;
+}
+.intern__grid strong { color: var(--brand); font-family: var(--serif); font-size: 1.05rem; font-weight: 600; }
+[data-theme="dark"] .intern__grid strong { color: var(--accent); }
+.intern__grid span { color: var(--fg-mute); font-size: .82rem; }
+.intern__note {
+  display: flex; align-items: flex-start; gap: 10px; margin: 0;
+  font-size: .88rem; color: var(--fg-2); border-top: 1px dashed var(--border); padding-top: 16px;
+}
+.intern__note .ic { color: var(--brand); width: 20px; height: 20px; flex: none; margin-top: 2px; }
+[data-theme="dark"] .intern__note .ic { color: var(--accent); }
+@media (max-width: 880px) { .intern__grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 540px) { .intern__grid { grid-template-columns: 1fr; } .intern { padding: 24px; } }
+
 /* ---------- admissions ---------- */
 .adm-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 36px; align-items: start; margin-bottom: 56px; }
 @media (max-width: 960px) { .adm-grid { grid-template-columns: 1fr; } }
@@ -626,6 +658,75 @@ strong { color: var(--fg); }
 .life h3 { color: var(--brand); margin-bottom: 6px; font-size: 1.1rem; }
 [data-theme="dark"] .life h3 { color: var(--accent); }
 .life p { margin: 0; font-size: .88rem; }
+
+/* ---------- statutory committees ---------- */
+.section--committees { background: var(--bg); border-block: 1px solid var(--border); }
+
+.cmt-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+  margin-bottom: 32px;
+}
+@media (max-width: 960px) { .cmt-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 540px) { .cmt-grid { grid-template-columns: 1fr; } }
+
+.cmt {
+  background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 24px; transition: border-color .2s ease, transform .2s ease;
+}
+.cmt:hover { border-color: var(--accent); transform: translateY(-2px); }
+.cmt h3 { color: var(--brand); margin-bottom: 6px; font-size: 1.1rem; }
+[data-theme="dark"] .cmt h3 { color: var(--accent); }
+.cmt > p { font-size: .85rem; color: var(--fg-mute); margin-bottom: 14px; }
+.cmt__list { list-style: none; padding: 14px 0 0; margin: 0; border-top: 1px dashed var(--border); display: grid; gap: 6px; font-size: .85rem; }
+.cmt__list li { display: grid; grid-template-columns: 130px 1fr; gap: 10px; }
+.cmt__list span { color: var(--fg-mute); font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 500; }
+@media (max-width: 540px) { .cmt__list li { grid-template-columns: 1fr; gap: 0; } }
+
+/* anti-ragging notice strip */
+.ragging {
+  display: grid; grid-template-columns: 64px 1fr; gap: 22px; align-items: start;
+  background: linear-gradient(135deg, rgba(123,30,30,.06), rgba(201,169,97,.05));
+  border: 1px solid rgba(123,30,30,.25); border-left: 4px solid var(--maroon);
+  border-radius: var(--radius); padding: 24px 28px;
+}
+[data-theme="dark"] .ragging { background: rgba(217,112,112,.06); border-color: rgba(217,112,112,.3); border-left-color: var(--accent-strong); }
+.ragging__icon {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--maroon); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.ragging__icon svg { width: 28px; height: 28px; }
+.ragging h3 { color: var(--maroon); margin-bottom: 6px; font-size: 1.1rem; }
+[data-theme="dark"] .ragging h3 { color: var(--accent-strong); }
+.ragging p { margin: 0; font-size: .92rem; color: var(--fg-2); line-height: 1.65; }
+.ragging strong { color: var(--maroon); font-size: 1.05rem; font-family: var(--serif); }
+[data-theme="dark"] .ragging strong { color: var(--accent-strong); }
+.ragging a { color: var(--maroon); border-bottom: 1px dashed currentColor; }
+[data-theme="dark"] .ragging a { color: var(--accent); border-bottom-color: var(--accent); }
+@media (max-width: 540px) { .ragging { grid-template-columns: 1fr; } .ragging__icon { width: 48px; height: 48px; } }
+
+/* faculty registration line */
+.fac__reg {
+  margin: 6px 22px 0; padding: 6px 10px;
+  background: rgba(15,76,58,.06); border-radius: 4px;
+  font-size: .72rem; color: var(--brand); font-weight: 500; letter-spacing: .03em;
+  font-family: var(--sans);
+}
+[data-theme="dark"] .fac__reg { background: rgba(109,179,160,.08); color: var(--accent); }
+
+/* disclosures group headings */
+.disc__group {
+  font-family: var(--serif); font-size: 1.25rem; color: var(--brand);
+  margin: 36px 0 16px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--accent);
+  display: flex; align-items: center; gap: 12px;
+}
+.disc__group:first-of-type { margin-top: 0; }
+[data-theme="dark"] .disc__group { color: var(--accent); border-bottom-color: var(--accent); }
+.disc__group::before {
+  content: ""; width: 8px; height: 8px; background: var(--maroon); border-radius: 50%; flex: none;
+}
+[data-theme="dark"] .disc__group::before { background: var(--accent-strong); }
 
 /* ---------- notices ---------- */
 .notice-toolbar {
@@ -826,6 +927,13 @@ strong { color: var(--fg); }
 .footer__addr { font-style: normal; color: rgba(216,225,220,.85); font-size: .9rem; line-height: 1.7; }
 .footer__addr a { color: rgba(216,225,220,.95); }
 .footer__addr a:hover { color: #fff; }
+
+.footer__strip {
+  background: rgba(0,0,0,.18); border-top: 1px solid rgba(255,255,255,.08);
+  padding-block: 12px; font-size: .78rem; color: rgba(216,225,220,.85);
+}
+.footer__strip-inner { display: flex; gap: 24px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.footer__strip strong { color: var(--accent); margin-right: 4px; font-weight: 600; }
 
 .footer__bottom { border-top: 1px solid rgba(255,255,255,.08); padding-block: 18px; }
 .footer__bottom-inner { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; font-size: .82rem; color: rgba(216,225,220,.7); }
