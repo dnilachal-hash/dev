@@ -444,6 +444,7 @@ strong { color: var(--fg); }
 
 /* ---------- courses ---------- */
 .course-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.course-grid--single { grid-template-columns: minmax(0, 720px); justify-content: center; }
 @media (max-width: 880px) { .course-grid { grid-template-columns: 1fr; } }
 
 .course {

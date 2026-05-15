@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0F4C3A" />
   <title>Rameshwar Das Kedia Homoeopathic Medical College and Hospital — Motihari, Bihar</title>
-  <meta name="description" content="Rameshwar Das Kedia Homoeopathic Medical College and Hospital, Motihari (East Champaran, Bihar) — a respected Homoeopathic medical college and teaching hospital offering BHMS and post-graduate Homoeopathic education with attached hospital, clinical training, and community healthcare." />
+  <meta name="description" content="Rameshwar Das Kedia Homoeopathic Medical College and Hospital, Motihari (East Champaran, Bihar) — a respected Homoeopathic medical college and teaching hospital offering the BHMS programme with attached hospital, clinical training, and community healthcare." />
   <meta name="keywords" content="Homoeopathic Medical College in Motihari, Homoeopathic Medical College in Bihar, BHMS Admission Bihar, Homoeopathic Hospital East Champaran, Homoeopathic Teaching Hospital, Medical College Motihari, Rameshwar Das Kedia Homoeopathic Medical College" />
   <meta name="author" content="Rameshwar Das Kedia Homoeopathic Medical College and Hospital" />
 
@@ -462,6 +462,7 @@ strong { color: var(--fg); }
 
 /* ---------- courses ---------- */
 .course-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.course-grid--single { grid-template-columns: minmax(0, 720px); justify-content: center; }
 @media (max-width: 880px) { .course-grid { grid-template-columns: 1fr; } }
 
 .course {
@@ -1388,11 +1389,11 @@ body.edx-on .cert__seal { isolation: isolate; }
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><span class="eyebrow__dash"></span> Courses Offered</p>
-      <h2 class="section-title">Structured Homoeopathic medical programmes.</h2>
-      <p class="section-lede">Programmes are conducted as per the regulations of the National Commission for Homoeopathy and the affiliating university, with mandatory clinical training in the attached teaching hospital.</p>
+      <h2 class="section-title">A structured undergraduate Homoeopathic medical programme.</h2>
+      <p class="section-lede">The BHMS programme is conducted as per the regulations of the National Commission for Homoeopathy and the affiliating university, with mandatory clinical training in the attached teaching hospital.</p>
     </div>
 
-    <div class="course-grid">
+    <div class="course-grid course-grid--single">
       <article class="course reveal">
         <header class="course__head">
           <span class="course__badge">Undergraduate</span>
@@ -1406,32 +1407,11 @@ body.edx-on .cert__seal { isolation: isolate; }
           <div><dt>Admission Basis</dt><dd>NEET-UG score &amp; State / Central counselling</dd></div>
           <div><dt>Fee Structure</dt><dd>As notified for the academic session</dd></div>
           <div><dt>Internship</dt><dd>Hospital-based clinical postings &amp; community medicine</dd></div>
-          <div><dt>Career Path</dt><dd>Clinical practice, hospital service, MD (Hom.), academia, public health</dd></div>
+          <div><dt>Career Path</dt><dd>Clinical practice, hospital service, academia, public health and further studies</dd></div>
         </dl>
         <div class="course__cta">
           <a href="#admissions" class="btn btn--primary btn--sm">Admission Details</a>
           <a href="#" class="btn btn--ghost btn--sm">Download prospectus</a>
-        </div>
-      </article>
-
-      <article class="course reveal">
-        <header class="course__head">
-          <span class="course__badge course__badge--alt">Postgraduate · Subject to approval</span>
-          <h3>Doctor of Medicine — Homoeopathy</h3>
-          <p class="course__abbr">M.D. (Hom.)</p>
-        </header>
-        <dl class="course__meta">
-          <div><dt>Duration</dt><dd>3 years (full-time)</dd></div>
-          <div><dt>Eligibility</dt><dd>BHMS degree from a recognised institution + completed internship</dd></div>
-          <div><dt>Specialties</dt><dd>Materia Medica · Organon · Repertory · Practice of Medicine — as approved</dd></div>
-          <div><dt>Intake</dt><dd>As per regulatory sanction (where applicable)</dd></div>
-          <div><dt>Admission Basis</dt><dd>AIAPGET score &amp; counselling</dd></div>
-          <div><dt>Training</dt><dd>OPD/IPD case-work, dissertation &amp; academic teaching</dd></div>
-          <div><dt>Career Path</dt><dd>Specialist practice, teaching, clinical research</dd></div>
-        </dl>
-        <div class="course__cta">
-          <a href="#admissions" class="btn btn--primary btn--sm">Admission Details</a>
-          <a href="#" class="btn btn--ghost btn--sm">Eligibility checklist</a>
         </div>
       </article>
     </div>
@@ -1463,7 +1443,7 @@ body.edx-on .cert__seal { isolation: isolate; }
           <h4>Documents required</h4>
           <ul class="checklist">
             <li>10th &amp; 12th mark sheets and certificates</li>
-            <li>NEET-UG / AIAPGET score card</li>
+            <li>NEET-UG score card</li>
             <li>Counselling allotment letter</li>
             <li>Transfer / migration certificate</li>
             <li>Character certificate</li>
@@ -1500,7 +1480,6 @@ body.edx-on .cert__seal { isolation: isolate; }
           <select name="course" required>
             <option value="">Select a programme</option>
             <option>BHMS</option>
-            <option>MD (Hom.) — subject to approval</option>
             <option>General inquiry</option>
           </select>
         </label>
@@ -2000,11 +1979,11 @@ body.edx-on .cert__seal { isolation: isolate; }
     </div>
 
     <div>
-      <h5>Courses</h5>
+      <h5>Course</h5>
       <ul class="footer__links">
         <li><a href="#courses">B.H.M.S.</a></li>
-        <li><a href="#courses">M.D. (Hom.)</a></li>
         <li><a href="#admissions">Admission Process</a></li>
+        <li><a href="#admissions">Eligibility &amp; Documents</a></li>
         <li><a href="#quick-links">Prospectus</a></li>
         <li><a href="#quick-links">Fee Structure</a></li>
       </ul>
